@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -22,14 +22,6 @@ jobs:
       run: |
         cd backend
         npm install
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Start backend
-      run: |
-        cd backend
-        npm start &  # Run backend in the background
 
     - name: Install frontend dependencies
       run: |

@@ -29,6 +29,7 @@
     "nodemon": "^3.1.4",
     "prettier": "^3.3.2"
   },
+  "homepage": "https://sgaurav23.github.io/Calculator_MERN-stack",
   "scripts": {
     "serve": "node server.js",
     "dev": "nodemon server.js",

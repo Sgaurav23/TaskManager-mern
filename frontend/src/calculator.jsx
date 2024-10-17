@@ -186,7 +186,7 @@ function Calculator() {
       <input type="text" value={input} readOnly placeholder="input" />
       <input type="text" value={result} readOnly placeholder="result" />
       <div className="buttons">
-        {['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'].map((btn) => (
+        {['1', '2', '3', '+', '4', '5', '6', '-', '7', '8', '9', '*', '.', '0', '/', 'log', 'sin', 'cos', 'tan'].map((btn) => (
           <button onClick={() => handleChange(btn)} key={btn} className="number">{btn}</button>
         ))}
         {['+', '-', '*', '/'].map((btn) => (

@@ -27,4 +27,8 @@
     "gh-pages": "^6.1.1",
     "vite": "^5.3.3"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 64ecb6a2 (Deploy updated calculator to GitHub Pages)

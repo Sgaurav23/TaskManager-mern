@@ -1,11 +1,11 @@
 
 import './App.css'
 // import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import Calculator from './calculator'
+import TaskList from './TaskList'
 function App() {
     return (
         <div>
-            <Calculator />
+            <TaskList />
         </div>
     )
 }

@@ -1,73 +1,12 @@
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const cors = require('cors');
-// const dotenv = require('dotenv');
-// const socketio = require('socket.io');
-// const History = require('./schema.js');
-// const http = require('http');
-
-// dotenv.config();
-// const app = express();
-// const server = http.createServer(app);
-
-// const io = socketio(server, {
-//   cors: {
-//     origin: ['https://luminous-resonant-feels.glitch.me', 'http://localhost:5173', 'https://sgaurav23.github.io'],
-//     methods: ['GET', 'POST', 'DELETE']
-//   },
-//   path: '/socket.io'  // Ensure the default path is correctly set
-// });
-
-
-// mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => {
-//     console.log('MongoDB connected');
-//     app.listen(process.env.PORT, () => {
-//       console.log(`Server running on port ${process.env.PORT}`);
-//     });
-//   })
-//   .catch(err => {
-//     console.error('MongoDB connection error:', err.message);
-//     process.exit(1);  // Exit the process if there's a connection error
-//   });
-
-// app.use(cors({ origin: ['http://localhost:5173', 'https://sgaurav23.github.io'] }));
-// app.use(express.json());
-
-// const messagesRouter = require('./routes/messages.js');
-// app.use('/history', messagesRouter);
-
-// io.on('connection', (socket) => {
-//   console.log(`Socket ${socket.id} connected`);
-//   socket.on('sendMessage', async (message) => {
-//       try {
-//           const history = new History(message);
-//           await history.save();
-//       } catch (err) {
-//           console.error('Error saving message:', err);
-//       }
-//   });
-//   socket.on('disconnect', () => {
-//       console.log(`Socket ${socket.id} disconnected`);
-//   });
-// });
- 
-// module.exports = app;
-
-
-
-
-
-
-
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-
-dotenv.config();
+const Task = require('./schema');
 const app = express();
+const cors = require('cors');
+const dotenv = require('dotenv')
 
+
+dotenv.config()
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -79,12 +18,41 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
   .catch(err => {
     console.error('MongoDB connection error:', err.message);
     process.exit(1);  // Exit the process if there's a connection error
-  });
+  });    
 
-app.use(cors({ origin: ['http://localhost:5173', 'https://sgaurav23.github.io'] }));
+// Middleware
 app.use(express.json());
+app.use(cors({
+  origin: 'https://task-manager-mern-project.netlify.app',
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+ 
+// Routes
+app.get('/api/tasks', async (req, res) => {
+  const tasks = await Task.find();
+  res.json(tasks);
+});
 
-const messagesRouter = require('./routes/messages.js');
-app.use('/history', messagesRouter);
+app.post('/api/tasks', async (req, res) => {
+  const { title, description } = req.body;
+  const newTask = new Task({ title, description });
+  await newTask.save();
+  res.status(201).send(newTask);
+});
 
-module.exports = app
+app.put('/api/tasks/:id', async (req, res) => {
+  const { id } = req.params;
+  const updatedTask = await Task.findByIdAndUpdate(id, req.body, { new: true });
+  res.status(200).send(updatedTask);
+});
+
+app.delete('/api/tasks', async (req, res) => {
+  await Task.deleteMany();
+  res.status(200).send('All tasks deleted');
+});
+
+app.delete('/api/tasks/:id', async (req, res) => {
+  await Task.findByIdAndDelete(req.params.id);
+  res.send('Task deleted');
+});

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/Calculator_MERN-stack/',
+  base: '/Task_Manager/',
   plugins: [react()],
   server:{
     proxy: {

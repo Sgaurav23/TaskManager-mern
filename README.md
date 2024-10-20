@@ -1,4 +1,4 @@
-# Calculator_MERN-stack
+# TaskManager-mern
 
 ## Backend
 To run the backend server:
